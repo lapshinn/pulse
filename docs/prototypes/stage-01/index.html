@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dashboard — прототип</title>
+  <link rel="stylesheet" href="styles.css">
+  <script>
+    (function () {
+      var theme = localStorage.getItem("pd-theme")
+      if (theme !== "dark") theme = "light"
+      document.documentElement.dataset.theme = theme
+    })()
+  </script>
+</head>
+<body>
+  <a class="skip" href="#content">К содержанию</a>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="#dashboard">
+        <span class="brand-mark"><span data-icon="heart"></span></span>
+        Personal Dashboard
+      </a>
+      <nav class="desktop-nav" aria-label="Разделы">
+        <a href="#dashboard" data-nav="dashboard">Dashboard</a>
+        <a href="#health" data-nav="health">Health</a>
+        <a href="#weather" data-nav="weather">Weather</a>
+        <a href="#news" data-nav="news">News</a>
+        <a href="#settings" data-nav="settings">Settings</a>
+      </nav>
+      <div class="header-actions">
+        <button type="button" class="icon-button" id="theme-toggle" aria-pressed="false" aria-label="Включить тёмную тему">
+          <span class="icon-moon" data-icon="moon"></span>
+          <span class="icon-sun" data-icon="sun"></span>
+        </button>
+        <a class="icon-button" href="#settings" data-nav="settings" aria-label="Открыть настройки">
+          <span data-icon="settings"></span>
+        </a>
+        <button type="button" class="icon-button menu-button" id="menu-button" aria-expanded="false" aria-controls="mobile-menu">
+          <span data-icon="menu"></span>
+          <span class="sr-only">Меню</span>
+        </button>
+      </div>
+    </div>
+    <nav id="mobile-menu" class="mobile-nav" aria-label="Разделы" hidden>
+      <a href="#dashboard" data-nav="dashboard">Dashboard</a>
+      <a href="#health" data-nav="health">Health</a>
+      <a href="#weather" data-nav="weather">Weather</a>
+      <a href="#news" data-nav="news">News</a>
+      <a href="#settings" data-nav="settings">Settings</a>
+    </nav>
+  </header>
+
+  <div class="proto-bar">
+    <div class="proto-bar-inner">
+      <p>Только для прототипа. Цифры и новости ниже — примеры, не измерения и не публикации.</p>
+      <label>
+        Состояние данных
+        <select id="data-state">
+          <option value="success">Пример данных</option>
+          <option value="loading">Загрузка</option>
+          <option value="empty">Нет данных</option>
+          <option value="error">Ошибка всех источников</option>
+          <option value="stale">Устаревшие данные</option>
+          <option value="weather-error">Ошибка только погоды</option>
+        </select>
+      </label>
+    </div>
+  </div>
+
+  <main id="content">
+    <div class="shell">
+      <section id="dashboard" data-page="dashboard" class="stack" aria-labelledby="dash-title">
+        <h1 id="dash-title" class="sr-only">Dashboard</h1>
+        <div class="greeting">
+          <div>
+            <p class="time" id="clock">--:--</p>
+            <p class="date-line" id="today"></p>
+            <p class="hello" id="hello"></p>
+          </div>
+          <p class="side-note" id="weekday"></p>
+        </div>
+        <div class="board">
+          <section id="weather-card" class="card weather board-weather" aria-label="Погода"></section>
+          <div id="health-cards" class="board-health"></div>
+          <section id="news-card" class="card board-news" aria-label="Новости"></section>
+        </div>
+      </section>
+
+      <section id="health" data-page="health" class="stack" hidden>
+        <h1 class="page-title">Health</h1>
+        <p class="lede">Шаги, сон, пульс и калории. Ниже — показатели, которые остаются в приложении и не выводятся на главную. Все значения на этом экране помечены как пример.</p>
+        <div id="health-root" class="stack"></div>
+      </section>
+
+      <section id="weather" data-page="weather" class="stack" hidden>
+        <h1 class="page-title">Weather</h1>
+        <p class="lede">Москва, температура в °C. На главной — ближайшие часы, здесь — семь дней.</p>
+        <section id="weather-page" class="card weather" aria-label="Подробная погода"></section>
+      </section>
+
+      <section id="news" data-page="news" class="stack" hidden>
+        <h1 class="page-title">News</h1>
+        <p class="lede">Пять материалов. Пока источник не подключён, это демонстрационные строки без ссылок.</p>
+        <section id="news-page" class="card" aria-label="Лента новостей"></section>
+      </section>
+
+      <section id="settings" data-page="settings" class="stack" hidden>
+        <h1 class="page-title">Settings</h1>
+        <p class="lede">Настройки прототипа сохраняются в этом браузере и не отправляются на сервер.</p>
+        <form class="form-grid">
+          <fieldset class="field">
+            <legend>Тема</legend>
+            <div class="choice">
+              <label><input type="radio" name="theme" value="light"> Светлая</label>
+              <label><input type="radio" name="theme" value="dark"> Тёмная</label>
+            </div>
+          </fieldset>
+          <label class="field">
+            <span>Часовой пояс</span>
+            <select id="timezone"></select>
+            <p class="help">В прототипе от него зависят часы и приветствие. Список зон короткий и не окончательный.</p>
+          </label>
+          <label class="field">
+            <span>Дневная цель шагов</span>
+            <input id="step-goal" inputmode="numeric" autocomplete="off" placeholder="Не задана">
+            <p class="help">Пустое поле убирает процент и полосу. Цель не зашита в карточку.</p>
+            <p class="error-text" id="goal-error" role="alert"></p>
+          </label>
+          <div class="field">
+            <span>Источники</span>
+            <p class="help">Импорт ZIP/CSV Mi Fitness остаётся в приложении. В прототипе он не запускается. Погода и новости к источникам не подключены.</p>
+          </div>
+          <div class="field">
+            <span>Когда данные считаются устаревшими</span>
+            <p class="help">Здоровье — 36 часов с синхронизации. Погода — 60 минут. Новости — 15 минут с времени рейтинга. Пороги согласованы для дальнейшей проверки.</p>
+          </div>
+          <div class="field">
+            <span>Отображение</span>
+            <p class="help">Плотность сбалансированная. Отдельных переключателей плотности в прототипе нет.</p>
+          </div>
+        </form>
+      </section>
+    </div>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>

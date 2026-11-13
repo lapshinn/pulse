@@ -1,0 +1,7 @@
+Шрифт Inter распространяется по лицензии SIL Open Font License 1.1.
+Текст лицензии: LICENSE-Inter.txt
+Файлы взяты из сборки Fontsource Inter 5.2.8 (variable, latin, latin-ext, cyrillic).
+
+Иконки — Lucide 0.544.0, лицензия ISC.
+Copyright (c) Lucide Contributors
+https://github.com/lucide-icons/lucide
